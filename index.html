@@ -1,12 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="cyberpunk">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>teste</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.33.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body>
-    <h1>teste123456789</h1>
+    <div class="navbar bg-base-300">
+        <a class="btn btn-ghost normal-case text-xl">Consulta de CEP</a>
+    </div>
+    <div>
+        <input id="cep">
+        <button id="btnConsultar" class="btn btn-outline">Consultar</button>
+        <h3></h3>
+    </div>
+    <script>
+        $('document').ready(() => {
+            $('#btnConsultar').on("click", consultar)
+
+            function consultar(){
+                var algo = $('#cep').val()
+            
+            $.ajax({
+                method: 'GET',
+                url: 'https://cdn.apicep.com/file/apicep/'+algo+'.json',
+            })
+            .done((data) => {
+                $('h3').html("Estado: "+data.state+" Cidade: "+data.city+" Bairro: "+data.district+" Rua: "+data.address)
+            })
+            .fail((_, status, msg) => {
+                alert('Dados inválidos!')
+            })
+        }
+      })
+    </script>
 </body>
+
 </html>
