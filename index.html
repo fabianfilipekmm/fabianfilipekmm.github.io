@@ -14,31 +14,40 @@
 
 <body>
     <div class="navbar bg-base-300">
-        <a class="btn btn-ghost normal-case text-xl">Consulta de CEP</a>
+        <a class="btn btn-ghost normal-case text-xl">Cadastro de endereço</a>
     </div>
     <div>
-        <input id="cep">
-        <button id="btnConsultar" class="btn btn-outline">Consultar</button>
-        <h3></h3>
+        <input id="cep" placeholder="CEP">
+        <input id="estado" placeholder="Estado" disabled>
+        <input id="cidade" placeholder="Cidade" disabled>
+        <input id="bairro" placeholder="Bairro" disabled>
+        <input id="rua" placeholder="Rua" disabled>
+        <input id="numero" placeholder="Número">
+        <input id="complemento" placeholder="complemento">
+        <button>Cadastrar</button>
     </div>
     <script>
         $('document').ready(() => {
-            $('#btnConsultar').on("click", consultar)
+
+               $('#cep').on("change", consultar)
 
             function consultar(){
                 var algo = $('#cep').val()
             
             $.ajax({
-                method: 'GET',
-                url: 'https://cdn.apicep.com/file/apicep/'+algo+'.json',
+                 method: 'GET',
+                 url: 'https://cdn.apicep.com/file/apicep/'+algo+'.json',
             })
             .done((data) => {
-                $('h3').html("Estado: "+data.state+" Cidade: "+data.city+" Bairro: "+data.district+" Rua: "+data.address)
-            })
-            .fail((_, status, msg) => {
-                alert('Dados inválidos!')
-            })
-        }
+                $('#estado').val(data.state)
+                $('#cidade').val(data.city)
+                $('#bairro').val(data.district)
+                $('#rua').val(data.address)
+             })
+             .fail((_, status, msg) => {
+                 alert('Dados inválidos!')
+             })
+         }
       })
     </script>
 </body>
