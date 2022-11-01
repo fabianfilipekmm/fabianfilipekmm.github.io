@@ -86,6 +86,7 @@
 
                                 </tbody>
                             </table>
+                            <button class="btn btn-dark" id="btnApagar">Apagar Campos</button>
                         </div>
                     </div>
                 </div>
@@ -94,6 +95,8 @@
     </div>
     <script>
         $('document').ready(() => {
+
+            buscaDados()
 
             $('#cep').mask("99999-999")
             $('#cep').on("change", consultar)
@@ -140,6 +143,7 @@
                 })
             }
             $('#btnCadastrar').click(postar)
+            $('#btnApagar').click(apagarTabela)
 
             function buscaDados() {
 
@@ -158,7 +162,7 @@
             function popularTabela(data) {
                 const tbody = document.querySelector('tbody')
                 tbody.innerHTML = ''
-                this.data.foreach(dado => {
+                data?.forEach(dado => {
                     tbody.innerHTML += `
                             <tr>
                                 <td>${dado.cep}</td>
@@ -172,6 +176,20 @@
                             </tr>
                             `
                 })
+            }
+
+            function apagarTabela(){
+                $.ajax({
+                    method: 'GET',
+                    url: `http://51.81.87.67:8085/reset`,
+                })
+                    .done((data) => {
+                        alert('Tabela apagada')
+                        buscaDados()
+                    })
+                    .fail(() => {
+                        alert('Falha ao apagar tabela')
+                    })
             }
         })
     </script>
