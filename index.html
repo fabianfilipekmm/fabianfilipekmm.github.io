@@ -1,54 +1,179 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="cyberpunk">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>teste</title>
+    <title>Cadastro de Endereço</title>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.33.0/dist/full.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+        integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
-    <div class="navbar bg-base-300">
-        <a class="btn btn-ghost normal-case text-xl">Cadastro de endereço</a>
+    <h1>Atenção! Site em manutenção!</h1>
+    <div class="container-fluid p-3 mb-2 bg-warning text-dark">
+        <div class="row">
+            <div class="col">
+                <a>Cadastro de endereço</a>
+            </div>
+        </div>
     </div>
-    <div>
-        <input id="cep" placeholder="CEP">
-        <input id="estado" placeholder="Estado" disabled>
-        <input id="cidade" placeholder="Cidade" disabled>
-        <input id="bairro" placeholder="Bairro" disabled>
-        <input id="rua" placeholder="Rua" disabled>
-        <input id="numero" placeholder="Número">
-        <input id="complemento" placeholder="complemento">
-        <button>Cadastrar</button>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-9">
+                <div class="card border-secondary">
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <input class="form-control" id="cep" placeholder="CEP">
+                                </div>
+                                <div class="col mb-3">
+                                    <input class="form-control" id="estado" placeholder="Estado" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <input class="form-control" id="cidade" placeholder="Cidade" disabled>
+                                </div>
+                                <div class="col mb-3">
+                                    <input class="form-control" id="bairro" placeholder="Bairro" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <input class="form-control" id="rua" placeholder="Rua" disabled>
+                                </div>
+                                <div class="col mb-3">
+                                    <input class="form-control" id="numero" placeholder="Número">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <input class="form-control" id="complemento" placeholder="Complemento">
+                                </div>
+                                <div class="col mb-3">
+                                    <input class="form-control" id="ddd" placeholder="DDD" disabled>
+                                </div>
+                            </div>
+                            <button class="btn btn-dark" id="btnCadastrar">Cadastrar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-secondary mt-2">
+                    <div class="card-body">
+                        <div class="container">
+                            <table class="table" id="tabela">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">CEP</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Cidade</th>
+                                        <th scope="col">Bairro</th>
+                                        <th scope="col">Rua</th>
+                                        <th scope="col">Número</th>
+                                        <th scope="col">Complemento</th>
+                                        <th scope="col">DDD</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         $('document').ready(() => {
 
-               $('#cep').on("change", consultar)
+            $('#cep').mask("99999-999")
+            $('#cep').on("change", consultar)
 
-            function consultar(){
-                var algo = $('#cep').val()
-            
-            $.ajax({
-                 method: 'GET',
-                 url: 'https://cdn.apicep.com/file/apicep/'+algo+'.json',
-            })
-            .done((data) => {
-                $('#estado').val(data.state)
-                $('#cidade').val(data.city)
-                $('#bairro').val(data.district)
-                $('#rua').val(data.address)
-             })
-             .fail((_, status, msg) => {
-                 alert('Dados inválidos!')
-             })
-         }
-      })
+            function consultar() {
+                var cep = $('#cep').val()
+
+                $.ajax({
+                    method: 'GET',
+                    url: `https://cep.awesomeapi.com.br/json/${cep}`,
+                })
+                    .done((data) => {
+                        $('#estado').val(data.state)
+                        $('#cidade').val(data.city)
+                        $('#bairro').val(data.district)
+                        $('#rua').val(data.address)
+                        $('#ddd').val(data.ddd)
+                    })
+                    .fail(() => {
+                        alert('Dados de CEP inválidos!')
+                    })
+            }
+
+            function postar() {
+
+                $.ajax({
+                    type: 'POST',
+                    url: `http://51.81.87.67:8085/endereco`,
+                    data: {
+                        cep: $("#cep").val(),
+                        estado: $("#estado").val(),
+                        endereco: $("#rua").val(),
+                        bairro: $("#bairro").val(),
+                        numero: $("#numero").val(),
+                        cidade: $("#cidade").val(),
+                        complemento: $("#complemento").val(),
+                        ddd: $("#ddd").val(),
+                    },
+                }).done(() => {
+                    buscaDados()
+                    alert('Cadastrado com sucesso!')
+                }).fail(() => {
+                    alert('Algo deu errado')
+                })
+            }
+            $('#btnCadastrar').click(postar)
+
+            function buscaDados() {
+
+                $.ajax({
+                    method: 'GET',
+                    url: `http://51.81.87.67:8085/endereco`,
+                })
+                    .done((data) => {
+                        popularTabela(data)
+                    })
+                    .fail(() => {
+                        alert('Dados de CEP inválidos!')
+                    })
+            }
+
+            function popularTabela(data) {
+                const tbody = document.querySelector('tbody')
+                tbody.innerHTML = ''
+                this.data.foreach(dado => {
+                    tbody.innerHTML += `
+                            <tr>
+                                <td>${dado.cep}</td>
+                                <td>${dado.estado}</td>
+                                <td>${dado.cidade}</td>
+                                <td>${dado.bairro}</td>
+                                <td>${dado.endereco}</td>
+                                <td>${dado.numero}</td>
+                                <td>${dado.complemento}</td>
+                                <td>${dado.ddd}</td>
+                            </tr>
+                            `
+                })
+            }
+        })
     </script>
 </body>
 
